@@ -1,0 +1,60 @@
+.app-name {
+  font-family: Arial, Helvetica, sans-serif;
+  position: absolute;
+  font-size: 28px;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.grid-container {
+  margin-top: 70px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+}
+
+.letter-box {
+  border: 2px solid gray;
+  border-radius: 3px;
+  margin: 2px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.keyboard {
+  position: fixed;
+  margin-bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.first-row,
+.second-row,
+.third-row {
+  margin: 0.5rem auto;
+  display: flex;
+  justify-content: center;
+}
+
+.keyboard-button {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0.7rem;
+  margin: 0 4px;
+  cursor: pointer;
+}
