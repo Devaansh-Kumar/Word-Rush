@@ -1,8 +1,7 @@
-import { useState } from 'react'
 import { useEffect } from 'react';
-import { Letter_Box } from './components/letterbox';
-import GridComponent from './components/grid'
-import Keyboard from './components/keyboard'
+import { Letter_Box } from './components/Letterbox';
+import GridComponent from './components/Grid'
+import Keyboard from './components/Keyboard'
 import './App.css'
 
 function App() {

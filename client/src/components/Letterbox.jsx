@@ -27,7 +27,7 @@ export function Letter_Box() {
         if (word.length === 5) {
           // check if the word typed is a valid word
           fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
-            .then(response => {
+            .then(response => { 
               if (response.status === 200) {
                 validWordTyped = true;
                 wordLetters = [];
