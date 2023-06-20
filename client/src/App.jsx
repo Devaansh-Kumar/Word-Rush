@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { Letter_Box } from './components/Letterbox';
-import GridComponent from './components/Grid'
-import Keyboard from './components/Keyboard'
-import './App.css'
-import WordleGame from './components/WordleGame';
+import { useEffect } from "react";
+import { Letter_Box } from "./components/Letterbox";
+import GridComponent from "./components/Grid";
+import Keyboard from "./components/Keyboard";
+import "./App.css";
+import WordleGame from "./components/WordleGame";
 
 function App() {
   useEffect(() => {
@@ -12,14 +12,14 @@ function App() {
 
   return (
     <>
-    <h1 className='app-name'>WORD-RUSH</h1>
+      <h1 className="app-name">WORD-RUSH</h1>
       <div>
-        {/* <GridComponent />
-        <Keyboard /> */}
-        <WordleGame/>
+        {/* <GridComponent /> */}
+        {/* <Keyboard /> */}
+        <WordleGame />
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
