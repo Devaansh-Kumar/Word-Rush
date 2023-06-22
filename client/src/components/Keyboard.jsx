@@ -2,7 +2,22 @@ import React from 'react';
 
 const Keyboard = () => {
   const handleKeyPress = (key) => {
-    const event = new KeyboardEvent('keydown', { key }); // it is a javascript API
+    const event = new KeyboardEvent('keydown', { key });
+    document.dispatchEvent(event);
+  };
+
+  const handleBackspace = () => {
+    const event = new KeyboardEvent('keydown', { key: 'Backspace' });
+    document.dispatchEvent(event);
+  };
+
+  const handleDelete = () => {
+    const event = new KeyboardEvent('keydown', { key: 'Delete' });
+    document.dispatchEvent(event);
+  };
+
+  const handleEnter = () => {
+    const event = new KeyboardEvent('keydown', { key: 'Enter' });
     document.dispatchEvent(event);
   };
 
@@ -33,7 +48,7 @@ const Keyboard = () => {
         <button className="keyboard-button" onClick={() => handleKeyPress('L')}> L </button>
       </div>
       <div className="third-row">
-        <button className="keyboard-button" onClick={() => handleKeyPress('Delete')}> Delete </button>
+        <button className="keyboard-button" onClick={() => handleDelete()}> Delete </button>
         <button className="keyboard-button" onClick={() => handleKeyPress('Z')}> Z </button>
         <button className="keyboard-button" onClick={() => handleKeyPress('X')}> X </button>
         <button className="keyboard-button" onClick={() => handleKeyPress('C')}> C </button>
@@ -41,7 +56,7 @@ const Keyboard = () => {
         <button className="keyboard-button" onClick={() => handleKeyPress('B')}> B </button>
         <button className="keyboard-button" onClick={() => handleKeyPress('N')}> N </button>
         <button className="keyboard-button" onClick={() => handleKeyPress('M')}> M </button>
-        <button className="keyboard-button" onClick={() => handleKeyPress('Enter')}> Enter </button>
+        <button className="keyboard-button" onClick={() => handleEnter()}> Enter </button>
       </div>
     </div>
   );

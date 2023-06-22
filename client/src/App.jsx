@@ -4,7 +4,6 @@ import GridComponent from "./components/Grid";
 import Keyboard from "./components/Keyboard";
 import "./App.css";
 import WordleGame from "./components/WordleGame";
-import { ToastContainer } from "react-toastify";
 
 function App() {
   useEffect(() => {
@@ -20,6 +19,7 @@ function App() {
       <div>
         {/* <GridComponent /> */}
         <WordleGame />
+        <Keyboard />
       </div>
     </>
   );

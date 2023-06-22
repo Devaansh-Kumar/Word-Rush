@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import Keyboard from "./Keyboard";
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -140,7 +139,7 @@ const WordleGame = () => {
       return;
     }
 
-    if (guess === fetchData) {
+    if (guess.toLowerCase() === word) {
       toast.success('Congratulations! You guessed the word correctly!', { autoClose: 3000 });
       resetGame();
     }
@@ -159,9 +158,9 @@ const WordleGame = () => {
   const resetGame = () => {
     setGrid(Array(6).fill(Array(5).fill("")));
     setCurrentRow(0);
-    setWord(generateNewWord());
+    setWord(fetchData()); // obtain the word for the new game
   };
-  
+
   return (
     <>
       <div className="flex flex-col items-center justify-center w-screen">
@@ -195,7 +194,6 @@ const WordleGame = () => {
         </table>
       </div>
       <ToastContainer />
-      <Keyboard />
     </>
   );
 };
