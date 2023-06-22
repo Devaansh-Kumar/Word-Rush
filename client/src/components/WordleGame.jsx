@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import Keyboard from "./Keyboard";
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const WordleGame = () => {
-  const [word, setWord] = useState("APPLE"); // The five-letter word
+  const [word, setWord] = useState(""); // The five-letter word
   const [grid, setGrid] = useState(Array(6).fill(Array(5).fill(""))); // 6x5 grid for user input
   const [currentRow, setCurrentRow] = useState(0); // Current row being filled
-
   const inputRefs = useRef(
     Array(6)
       .fill()
@@ -13,22 +15,59 @@ const WordleGame = () => {
   ); // Refs for each input cell
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const checkWord = async (word) => {
+    try {
+      const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+      if (response.status === 200) {
+        return true; // Valid word
+      }
+      else {
+        return false; // Invalid word
+      }
+    }
+    catch (error) {
+      console.error('Oops, try again in sometime.');
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('https://random-word-api.vercel.app/api?length=5');
+      const wordString = response.data.join('');
+      setWord(wordString);
+      console.log(wordString);
+    }
+    catch (error) {
+      console.error('Maximum retry limit reached. Unable to fetch data.');
+    }
+  };
+
+  useEffect(() => {
     // Focus on the first input cell of the current row when it changes
     inputRefs.current[currentRow][0].focus();
   }, [currentRow]);
 
   const handleInputChange = (e, rowIndex, columnIndex) => {
-    const updatedGrid = [...grid];
-    updatedGrid[rowIndex] = [...updatedGrid[rowIndex]];
-    updatedGrid[rowIndex][columnIndex] = e.target.value.toUpperCase(); // Convert the guess to uppercase
-    setGrid(updatedGrid);
+    const inputValue = e.target.value.toUpperCase(); // Convert the input to uppercase
 
-    if (columnIndex < 4) {
-      // Automatically move to the next grid cell (except for the last cell of a row)
-      inputRefs.current[rowIndex][columnIndex + 1].focus();
-    } else if (rowIndex < 5) {
-      // Move to the first cell of the next row
-      inputRefs.current[rowIndex + 1][0].focus();
+    // Only allow alphabetic characters
+    if (/^[A-Z]$/.test(inputValue) || inputValue === "") {
+      const updatedGrid = [...grid];
+      updatedGrid[rowIndex] = [...updatedGrid[rowIndex]];
+      updatedGrid[rowIndex][columnIndex] = inputValue;
+      setGrid(updatedGrid);
+
+      if (columnIndex < 4) {
+        // Automatically move to the next grid cell (except for the last cell of a row)
+        inputRefs.current[rowIndex][columnIndex + 1].focus();
+      }
+      else if (rowIndex < 5) {
+        // Move to the first cell of the next row
+        inputRefs.current[rowIndex + 1][0].focus();
+      }
     }
   };
 
@@ -37,12 +76,15 @@ const WordleGame = () => {
       e.preventDefault();
       if (rowIndex === currentRow && columnIndex === 4) {
         validateGuess();
-      } else if (rowIndex === currentRow && columnIndex < 4) {
+      }
+      else if (rowIndex === currentRow && columnIndex < 4) {
         inputRefs.current[rowIndex][columnIndex + 1].focus();
-      } else if (rowIndex < currentRow) {
+      }
+      else if (rowIndex < currentRow) {
         inputRefs.current[rowIndex + 1][0].focus();
       }
-    } else if (e.key === "Backspace") {
+    }
+    else if (e.key === "Backspace") {
       if (grid[rowIndex][columnIndex] === "" && columnIndex > 0) {
         // If the current cell is empty, delete the letter of the previous cell and move the cursor back
         e.preventDefault();
@@ -50,7 +92,8 @@ const WordleGame = () => {
         updatedGrid[rowIndex][columnIndex - 1] = "";
         setGrid(updatedGrid);
         inputRefs.current[rowIndex][columnIndex - 1].focus();
-      } else if (
+      }
+      else if (
         grid[rowIndex][columnIndex] !== "" &&
         columnIndex === 0 &&
         rowIndex > 0
@@ -62,7 +105,8 @@ const WordleGame = () => {
         setGrid(updatedGrid);
         inputRefs.current[rowIndex - 1][0].focus();
       }
-    } else if (e.key === "Delete") {
+    }
+    else if (e.key === "Delete") {
       e.preventDefault();
       const updatedGrid = [...grid];
       for (let i = 0; i < 5; i++) {
@@ -73,54 +117,54 @@ const WordleGame = () => {
     }
   };
 
-  const validateGuess = () => {
-    const guess = grid[currentRow].join("");
+  const validateGuess = async () => {
+    const guess = grid[currentRow].join('');
+
     if (guess.length !== 5) {
-      alert("Please enter a valid 5-letter word.");
+      toast.error('Please enter a valid 5-letter word.', { autoClose: 2000 });
       return;
     }
+
     // Check if the guess is a valid word
-    if (!isValidWord(guess)) {
-      alert("Please enter a valid word.");
+    const isValid = await checkWord(guess);
+    if (!isValid) {
+      toast.error('Please enter a valid English word.', { autoClose: 2000 });
+
+      // Erase the words in the current row
+      const updatedGrid = [...grid];
+      updatedGrid[currentRow] = Array(5).fill('');
+      setGrid(updatedGrid);
+
+      // Move focus to the first box in the current row
+      inputRefs.current[currentRow][0].focus();
       return;
     }
-    if (guess === word) {
-      alert("Congratulations! You guessed the word correctly!");
+
+    if (guess === fetchData) {
+      toast.success('Congratulations! You guessed the word correctly!', { autoClose: 3000 });
       resetGame();
-    } else {
+    }
+    else {
       if (currentRow === 5) {
-        alert("Game over! You ran out of attempts.");
+        toast.error('Game over! You ran out of attempts.', { autoClose: 5000 });
         resetGame();
-      } else {
+      }
+      else {
         setCurrentRow((prevRow) => prevRow + 1);
       }
     }
   };
+
 
   const resetGame = () => {
     setGrid(Array(6).fill(Array(5).fill("")));
     setCurrentRow(0);
     setWord(generateNewWord());
   };
-
-  const generateNewWord = () => {
-    // Generate a new random 5-letter word
-    // You can replace this logic with your own word generation logic
-    const words = ["APPLE", "ORANGE", "LEMON", "GRAPE", "MANGO"];
-    return words[Math.floor(Math.random() * words.length)];
-  };
-
-  const isValidWord = (word) => {
-    // Check if the word is a valid word
-    // You can replace this logic with your own word validation logic
-    const validWords = ["APPLE", "ORANGE", "LEMON", "GRAPE", "MANGO"];
-    return validWords.includes(word);
-  };
-
+  
   return (
     <>
       <div className="flex flex-col items-center justify-center w-screen">
-        <p>Attempts Remaining: {6 - currentRow}</p>
         <table className="table-auto">
           <tbody>
             {grid.map((row, rowIndex) => (
@@ -128,7 +172,7 @@ const WordleGame = () => {
                 {row.map((cell, columnIndex) => (
                   <td key={columnIndex}>
                     <input
-                      className="h-16 w-16 m-1 text-center"
+                      className="h-14 w-14 m-1 border-2 border-neutral-600 text-center text-2xl font-semibold"
                       type="text"
                       value={cell}
                       onChange={(e) =>
@@ -150,7 +194,8 @@ const WordleGame = () => {
           </tbody>
         </table>
       </div>
-      <Keyboard/>
+      <ToastContainer />
+      <Keyboard />
     </>
   );
 };
