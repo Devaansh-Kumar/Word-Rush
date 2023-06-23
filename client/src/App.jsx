@@ -6,9 +6,6 @@ import "./App.css";
 import WordleGame from "./components/WordleGame";
 
 function App() {
-  useEffect(() => {
-    Letter_Box();
-  }, []);
 
   return (
     <>
