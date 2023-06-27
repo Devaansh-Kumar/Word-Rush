@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Keyboard from "./Keyboard";
 
 const WordleGame = () => {
   const [word, setWord] = useState(""); // The five-letter word
@@ -193,6 +194,7 @@ const WordleGame = () => {
           </tbody>
         </table>
       </div>
+      <Keyboard />
       <ToastContainer />
     </>
   );

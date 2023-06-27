@@ -1,5 +1,6 @@
 import "./Login.css";
 import { Formik } from "formik";
+import { Link } from 'react-router-dom';
 import * as Yup from "yup";
 
 // Creating schema
@@ -83,6 +84,9 @@ function Register() {
                 </p>
                 {/* Click on submit button to submit the form */}
                 <button type="submit">Register</button>
+                <Link to="/login" className="link">
+                  Already have an account? Login here.
+                </Link>
               </form>
             </div>
           </div>

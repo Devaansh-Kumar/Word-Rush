@@ -1,5 +1,6 @@
 import "./Login.css";
 import { Formik } from "formik";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
 // Creating schema
@@ -34,10 +35,10 @@ function Login() {
         }) => (
           <div className="login">
             <div className="form">
-           {/* Passing handleSubmit parameter tohtml form onSubmit property */}
+              {/* Passing handleSubmit parameter tohtml form onSubmit property */}
               <form noValidate onSubmit={handleSubmit}>
                 <span>Login</span>
-              {/* Our input html with passing formik parameters like handleChange, values, handleBlur to input properties */}
+                {/* Our input html with passing formik parameters like handleChange, values, handleBlur to input properties */}
                 <input
                   type="email"
                   name="email"
@@ -52,7 +53,7 @@ function Login() {
                 <p className="error">
                   {errors.email && touched.email && errors.email}
                 </p>
-                 {/* Our input html with passing formik parameters like handleChange, values, handleBlur to input properties */}
+                {/* Our input html with passing formik parameters like handleChange, values, handleBlur to input properties */}
                 <input
                   type="password"
                   name="password"
@@ -62,12 +63,15 @@ function Login() {
                   placeholder="Enter password"
                   className="form-control"
                 />
-                 {/* If validation is not passed show errors */}
+                {/* If validation is not passed show errors */}
                 <p className="error">
                   {errors.password && touched.password && errors.password}
                 </p>
                 {/* Click on submit button to submit the form */}
                 <button type="submit">Login</button>
+                <Link to="/register" className="link">
+                  New User? Create an account.
+                </Link>
               </form>
             </div>
           </div>

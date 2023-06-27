@@ -21,13 +21,13 @@ body {
     background: #FFFFFF;
     border-radius: 10px;
     max-width: 400px;
-    padding: 60px;
+    padding: 40px;
     text-align: center;
 }
 
 .form input {
     outline: 0;
-    background: #f2f2f2;
+    background: #ffffff;
     width: 100%;
     border: 0;
     border-radius: 5px;
@@ -58,7 +58,7 @@ body {
 }
 
 .form button:active {
-    background: #000000;
+    background: #302f2f;
 }
 
 .form span {
@@ -73,4 +73,18 @@ body {
     text-align: left;
     font-size: 10px;
     color: red;
+}
+
+.link {
+    display: block;
+    margin-top: 18px;
+    text-align: center;
+    color: #000000;
+    font-size: 16px;
+    text-decoration: none;
+    font-family: 'Comfortaa', cursive;
+}
+
+.link:hover {
+    text-decoration: underline;
 }
