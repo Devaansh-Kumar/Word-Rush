@@ -1,12 +1,11 @@
 import { useEffect } from "react";
-import { Letter_Box } from "./components/Letterbox";
-import GridComponent from "./components/Grid";
 import Keyboard from "./components/Keyboard";
 import "./App.css";
 import WordleGame from "./components/WordleGame";
+import Login from "./components/Login";
+import Register from "./components/Register";
 
 function App() {
-
   return (
     <>
       <div className="flex justify-center text-sm mb-1 font-serif">
@@ -15,8 +14,10 @@ function App() {
 
       <div>
         {/* <GridComponent /> */}
-        <WordleGame />
-        <Keyboard />
+        {/* <WordleGame /> */}
+        {/* <Keyboard handleKeyPress={handleKeyPress}/> */}
+        <Login />
+        <Register />
       </div>
     </>
   );

@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(90deg, #303339 0%, #000000 100%);
+    height: 100vh;
+    margin: 0;
+}
+
+.login {
+    width: 360px;
+    padding: 8% 0 0;
+    font-family: 'Comfortaa', cursive;
+}
+
+.form {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    border-radius: 10px;
+    max-width: 400px;
+    padding: 60px;
+    text-align: center;
+}
+
+.form input {
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    border-radius: 5px;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: 'Comfortaa', cursive;
+}
+
+.form input:focus {
+    background: #dbdbdb;
+}
+
+.form button {
+    font-family: 'Comfortaa', cursive;
+    text-transform: uppercase;
+    outline: 0;
+    background: #2a2c32;
+    width: 100%;
+    border: 0;
+    border-radius: 5px;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.form button:active {
+    background: #000000;
+}
+
+.form span {
+    font-size: 40px;
+    color: #000000;
+    margin-bottom: 25px;
+    display: block;
+}
+
+.form p.error {
+    margin: 0 0 10px 10px;
+    text-align: left;
+    font-size: 10px;
+    color: red;
+}
