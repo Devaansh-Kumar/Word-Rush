@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import Keyboard from "./components/Keyboard";
 import "./App.css";
-import WordleGame from "./components/WordleGame";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Wordle from "./components/Wordle/Wordle";
 
 function App() {
   return (
@@ -13,11 +13,8 @@ function App() {
       </div>
 
       <div>
-        {/* <GridComponent /> */}
-        {/* <WordleGame /> */}
-        {/* <Keyboard handleKeyPress={handleKeyPress}/> */}
-        <Login />
-        <Register />
+
+        <Wordle/>        
       </div>
     </>
   );
