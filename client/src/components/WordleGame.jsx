@@ -155,7 +155,6 @@ const WordleGame = () => {
     }
   };
 
-
   const resetGame = () => {
     setGrid(Array(6).fill(Array(5).fill("")));
     setCurrentRow(0);
@@ -164,6 +163,9 @@ const WordleGame = () => {
 
   return (
     <>
+      <div className="flex justify-center text-sm mb-1 font-serif">
+        <h1>WORD-RUSH</h1>
+      </div>
       <div className="flex flex-col items-center justify-center w-screen">
         <table className="table-auto">
           <tbody>

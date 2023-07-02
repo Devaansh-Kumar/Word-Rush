@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import './Form.css';
+import "./Form.css";
+import Spinner from "./Spinner";
 
 // Creating schema
 const schema = Yup.object().shape({
@@ -14,10 +15,15 @@ const schema = Yup.object().shape({
 
 function Login() {
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Access the navigate function
+  const [loading, setLoading] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (values) => {
     setError("");
+    setLoading(true);
+
+    const startTime = Date.now();
 
     try {
       const response = await fetch("http://localhost:3000/login", {
@@ -32,19 +38,44 @@ function Login() {
 
       if (!response.ok) {
         setError(data.error);
+        setLoading(false);
         return;
       }
 
-      // Handle successful login
-      console.log(data.message);
+      const elapsedTime = Date.now() - startTime;
+      const delay = elapsedTime > 0 ? 1 : 0;
 
-      // Redirect to the game route
-      navigate("/game");
+      if (delay) 
+      {
+        setRedirecting(true);
+        setTimeout(() => {
+          navigate("/game");
+        }, delay);
+      } 
+      else 
+      {
+        navigate("/game");
+      }
     } catch (error) {
       console.error(error);
       setError("An error occurred during login.");
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (loading) {
+      // Display the spinner when loading is true
+      const spinnerTimeout = setTimeout(() => {
+        setLoading(false);
+        navigate("/");
+      }, 2000);
+
+      return () => {
+        clearTimeout(spinnerTimeout);
+      };
+    }
+  }, [loading, navigate]);
 
   return (
     <>
@@ -98,6 +129,8 @@ function Login() {
                 </p>
                 {/* Display error message if login fails */}
                 {error && <p className="error">{error}</p>}
+                {/* Render the spinner component if loading is true */}
+                {redirecting && <Spinner />}
                 {/* Click on submit button to submit the form */}
                 <button type="submit">Login</button>
                 <Link to="/register" className="link">
