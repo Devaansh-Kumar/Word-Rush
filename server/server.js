@@ -1,10 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config(); // Load the environment variables from .env file
+const bcrypt = require('bcryptjs');
+require('dotenv').config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
@@ -20,6 +21,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
+  salt: String,
 });
 
 // Create a user model
@@ -29,22 +31,25 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Find a user with the provided username and password
-    const user = await User.findOne({ username, password });
+    // Find a user with the provided username
+    const user = await User.findOne({ username });
 
-    if (user) 
-    {
-      // User found, authentication successful
-      res.json({ message: 'Login successful' });
-    } 
-    else 
-    {
-      // User not found or incorrect password, authentication failed
+    if (user) {
+      // Compare the provided password with the hashed password in the database
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (isPasswordValid) {
+        // User found, authentication successful
+        res.json({ message: 'Login successful' });
+      } else {
+        // Incorrect password, authentication failed
+        res.status(401).json({ error: 'Invalid username or password' });
+      }
+    } else {
+      // User not found, authentication failed
       res.status(401).json({ error: 'Invalid username or password' });
     }
-  } 
-  catch (error) 
-  {
+  } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -53,22 +58,25 @@ app.post('/login', async (req, res) => {
 app.post('/register', async (req, res) => {
   const { name, username, password } = req.body;
 
-  try 
-  {
-    // We want only unique user
+  try {
+    // Check if the username already exists
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
       // User with the same username already exists
       res.status(409).json({ error: 'Username already exists' });
     } else {
+      // Generate a salt
+      const salt = await bcrypt.genSalt(10);
+
+      // Hash the password with the generated salt
+      const hashedPassword = await bcrypt.hash(password, salt);
+
       // Create a new user in the database
-      const newUser = await User.create({ name, username, password });
+      const newUser = await User.create({ name, username, password: hashedPassword, salt });
       res.json({ message: 'Registration successful', user: newUser });
     }
-  } 
-  catch (error) 
-  {
+  } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
