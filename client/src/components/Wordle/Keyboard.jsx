@@ -1,7 +1,7 @@
 import React from "react";
 import letters from "./KeyboardLetters.json";
 
-const Keyboard = () => {
+const Keyboard = ({ usedKeys }) => {
   // const [letters, setLetters] = useState(null);
   console.log(letters);
   const firstRow = letters.letters[0].firstRow;
@@ -14,8 +14,9 @@ const Keyboard = () => {
     <div className="flex flex-col m-6 items-center">
       <div className="flex flex-row">
         {firstRow.map((l, i) => {
+          const color = usedKeys[l.key];
           return (
-            <div key={i} className={style}>
+            <div key={i} className={style} id={color}>
               {l.key}
             </div>
           );
@@ -23,8 +24,9 @@ const Keyboard = () => {
       </div>
       <div className="flex flex-row">
         {secondRow.map((l, i) => {
+          const color = usedKeys[l.key];
           return (
-            <div key={i} className={style}>
+            <div key={i} className={style} id={color}>
               {l.key}
             </div>
           );
@@ -32,8 +34,9 @@ const Keyboard = () => {
       </div>
       <div className="flex flex-row">
         {thirdRow.map((l, i) => {
+          const color = usedKeys[l.key];
           return (
-            <div key={i} className={style}>
+            <div key={i} className={style} id={color}>
               {l.key}
             </div>
           );

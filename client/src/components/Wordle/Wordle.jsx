@@ -13,7 +13,7 @@ const Wordle = () => {
         );
         const wordString = response.data.join("");
         setSolution(wordString.toUpperCase());
-        console.log(solution); 
+        console.log(solution);
       } catch (error) {
         console.log(error);
         console.error("Maximum retry limit reached. Unable to fetch data.");
@@ -25,7 +25,7 @@ const Wordle = () => {
   return (
     <>
       {solution && <div> the solution is: {solution}</div>}
-      {solution && <WordleGame solution={solution}/>}      
+      {solution && <WordleGame solution={solution} />}
     </>
   );
 };

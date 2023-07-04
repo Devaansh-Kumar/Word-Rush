@@ -5,7 +5,7 @@ const useWordle = (solution) => {
   const [currentGuess, setCurrentGuess] = useState(""); // what user is currently typing
   const [guesses, setGuesses] = useState([...Array(6)]); // place all guesses in this array
   const [isCorrect, setIsCorrect] = useState(false);
-  const [usedKeys, setUsedKeys] = useState({})
+  const [usedKeys, setUsedKeys] = useState({});
 
   // Checks the validity of the guess and adds color to it
   // after running this function the formatted guess will look like
@@ -51,11 +51,37 @@ const useWordle = (solution) => {
       return prevTurn + 1;
     });
 
+    setUsedKeys((prevUsedKeys) => {
+      let newKeys = { ...prevUsedKeys };
+      formattedGuess.forEach((letter) => {
+        const currentColor = newKeys[letter.key];
+
+        if (letter.color === "green") {
+          newKeys[letter.key] = "green";
+          return;
+        }
+        if (letter.color === "yellow" && currentColor !== "green") {
+          newKeys[letter.key] = "yellow";
+          return;
+        }
+        if (
+          letter.color === "gray" &&
+          currentColor !== "yellow" &&
+          currentColor !== "green"
+        ) {
+          newKeys[letter.key] = "gray";
+          return;
+        }
+      });
+      return newKeys;
+    });
+
     // resetting the guess to empty string
     setCurrentGuess("");
   };
-  
+
   const handleKeyPress = (e) => {
+    // console.log("this is k", k);
     const key = e.key.toUpperCase();
     console.log(key);
 
@@ -88,7 +114,7 @@ const useWordle = (solution) => {
     }
   };
 
-  return { turn, currentGuess, guesses, isCorrect, handleKeyPress };
+  return { turn, currentGuess, guesses, isCorrect, usedKeys, handleKeyPress };
 };
 
 export default useWordle;

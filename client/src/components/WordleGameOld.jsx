@@ -153,7 +153,9 @@ const WordleGame = () => {
 
   const handleKeyClick = (key) => {
     const currentInput = inputRefs.current[currentRow];
-    const currentIndex = currentInput.findIndex((ref) => ref === document.activeElement);
+    const currentIndex = currentInput.findIndex(
+      (ref) => ref === document.activeElement
+    );
     if (currentIndex !== -1) {
       const updatedGrid = [...grid];
       updatedGrid[currentRow][currentIndex] = key.toUpperCase();
