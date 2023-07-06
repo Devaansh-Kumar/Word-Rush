@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Keyboard from "./Keyboard";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Keyboard from "./KeyboardKey";
 
 const WordleGame = () => {
   const [word, setWord] = useState(""); // The five-letter word
@@ -13,6 +13,7 @@ const WordleGame = () => {
       .fill()
       .map(() => Array(5).fill(null))
   ); // Refs for each input cell
+  const [keyboard, setKeyboard] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -20,28 +21,29 @@ const WordleGame = () => {
 
   const checkWord = async (word) => {
     try {
-      const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+      const response = await axios.get(
+        `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+      );
       if (response.status === 200) {
         return true; // Valid word
-      }
-      else {
+      } else {
         return false; // Invalid word
       }
-    }
-    catch (error) {
-      console.error('Oops, try again in sometime.');
+    } catch (error) {
+      console.error("Oops, try again in sometime.");
     }
   };
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://random-word-api.vercel.app/api?length=5');
-      const wordString = response.data.join('');
+      const response = await axios.get(
+        "https://random-word-api.vercel.app/api?length=5"
+      );
+      const wordString = response.data.join("");
       setWord(wordString);
       console.log(wordString);
-    }
-    catch (error) {
-      console.error('Maximum retry limit reached. Unable to fetch data.');
+    } catch (error) {
+      console.error("Maximum retry limit reached. Unable to fetch data.");
     }
   };
 
@@ -63,8 +65,7 @@ const WordleGame = () => {
       if (columnIndex < 4) {
         // Automatically move to the next grid cell (except for the last cell of a row)
         inputRefs.current[rowIndex][columnIndex + 1].focus();
-      }
-      else if (rowIndex < 5) {
+      } else if (rowIndex < 5) {
         // Move to the first cell of the next row
         inputRefs.current[rowIndex + 1][0].focus();
       }
@@ -76,15 +77,12 @@ const WordleGame = () => {
       e.preventDefault();
       if (rowIndex === currentRow && columnIndex === 4) {
         validateGuess();
-      }
-      else if (rowIndex === currentRow && columnIndex < 4) {
+      } else if (rowIndex === currentRow && columnIndex < 4) {
         inputRefs.current[rowIndex][columnIndex + 1].focus();
-      }
-      else if (rowIndex < currentRow) {
+      } else if (rowIndex < currentRow) {
         inputRefs.current[rowIndex + 1][0].focus();
       }
-    }
-    else if (e.key === "Backspace") {
+    } else if (e.key === "Backspace") {
       if (grid[rowIndex][columnIndex] === "" && columnIndex > 0) {
         // If the current cell is empty, delete the letter of the previous cell and move the cursor back
         e.preventDefault();
@@ -92,8 +90,7 @@ const WordleGame = () => {
         updatedGrid[rowIndex][columnIndex - 1] = "";
         setGrid(updatedGrid);
         inputRefs.current[rowIndex][columnIndex - 1].focus();
-      }
-      else if (
+      } else if (
         grid[rowIndex][columnIndex] !== "" &&
         columnIndex === 0 &&
         rowIndex > 0
@@ -105,8 +102,7 @@ const WordleGame = () => {
         setGrid(updatedGrid);
         inputRefs.current[rowIndex - 1][0].focus();
       }
-    }
-    else if (e.key === "Delete") {
+    } else if (e.key === "Delete") {
       e.preventDefault();
       const updatedGrid = [...grid];
       for (let i = 0; i < 5; i++) {
@@ -118,21 +114,21 @@ const WordleGame = () => {
   };
 
   const validateGuess = async () => {
-    const guess = grid[currentRow].join('');
+    const guess = grid[currentRow].join("");
 
     if (guess.length !== 5) {
-      toast.error('Please enter a valid 5-letter word.', { autoClose: 2000 });
+      toast.error("Please enter a valid 5-letter word.", { autoClose: 2000 });
       return;
     }
 
     // Check if the guess is a valid word
     const isValid = await checkWord(guess);
     if (!isValid) {
-      toast.error('Please enter a valid English word.', { autoClose: 2000 });
+      toast.error("Please enter a valid English word.", { autoClose: 2000 });
 
       // Erase the words in the current row
       const updatedGrid = [...grid];
-      updatedGrid[currentRow] = Array(5).fill('');
+      updatedGrid[currentRow] = Array(5).fill("");
       setGrid(updatedGrid);
 
       // Move focus to the first box in the current row
@@ -141,19 +137,20 @@ const WordleGame = () => {
     }
 
     if (guess.toLowerCase() === word) {
-      toast.success('Congratulations! You guessed the word correctly!', { autoClose: 3000 });
+      toast.success("Congratulations! You guessed the word correctly!", {
+        autoClose: 3000,
+      });
       resetGame();
-    }
-    else {
+    } else {
       if (currentRow === 5) {
-        toast.error('Game over! You ran out of attempts.', { autoClose: 5000 });
+        toast.error("Game over! You ran out of attempts.", { autoClose: 5000 });
         resetGame();
-      }
-      else {
+      } else {
         setCurrentRow((prevRow) => prevRow + 1);
       }
     }
   };
+
 
   const resetGame = () => {
     setGrid(Array(6).fill(Array(5).fill("")));
@@ -196,7 +193,7 @@ const WordleGame = () => {
           </tbody>
         </table>
       </div>
-      <Keyboard />
+      <Keyboard handleKeyClick={handleKeyClick} />
       <ToastContainer />
     </>
   );
