@@ -1,9 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
-import "./App.css";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Spinner from './components/Spinner';
-import Wordle from "./components/Wordle/Wordle";
+import Wordle from "./components/Game/Wordle";
 
 function App() {
   return (

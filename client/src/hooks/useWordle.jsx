@@ -1,17 +1,31 @@
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+
+const checkWord = async (word) => {
+  try {
+    const response = await axios.get(
+      `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+    );
+    if (response.status === 200) {
+      return true; 
+    } else {
+      return false; 
+    }
+  } catch (error) {
+    console.error("Error fetching the data");
+    return false; 
+  }
+};
 
 const useWordle = (solution, toastError, toastSuccess) => {
-  const [turn, setTurn] = useState(0); // what turn user is on
-  const [currentGuess, setCurrentGuess] = useState(""); // what user is currently typing
-  const [guesses, setGuesses] = useState([...Array(6)]); // place all guesses in this array
+  const [turn, setTurn] = useState(0);
+  const [currentGuess, setCurrentGuess] = useState("");
+  const [guesses, setGuesses] = useState([...Array(6)]);
   const [isCorrect, setIsCorrect] = useState(false);
   const [usedKeys, setUsedKeys] = useState({});
 
-  // Checks the validity of the guess and adds color to it
-  // after running this function the formatted guess will look like
-  // [{key : 'd', color : 'green'}, {key : 'k', color : 'yellow'} ...]
   const formatGuess = () => {
     let solutionArray = [...solution];
     let formattedGuess = [...currentGuess].map((key) => {
@@ -19,7 +33,7 @@ const useWordle = (solution, toastError, toastSuccess) => {
     });
 
     formattedGuess.forEach((letter, index) => {
-      if (solutionArray[index] == letter.key) {
+      if (solutionArray[index] === letter.key) {
         formattedGuess[index].color = "green";
         solutionArray[index] = null;
       }
@@ -35,20 +49,17 @@ const useWordle = (solution, toastError, toastSuccess) => {
     return formattedGuess;
   };
 
-  // add a new guess to the guesses state and increment the turn
-  const addNewGuess = (formattedGuess) => {
+  const addNewGuess = async (formattedGuess) => {
     if (currentGuess === solution) {
       setIsCorrect(true);
     }
 
-    // adding guess to guesses array
     setGuesses((prevGuesses) => {
       let newGuesses = [...prevGuesses];
       newGuesses[turn] = formattedGuess;
       return newGuesses;
     });
 
-    // incrementing turn
     setTurn((prevTurn) => {
       return prevTurn + 1;
     });
@@ -78,23 +89,18 @@ const useWordle = (solution, toastError, toastSuccess) => {
       return newKeys;
     });
 
-    // resetting the guess to empty string
     setCurrentGuess("");
   };
 
-  const handleKeyPress = (e) => {
-    // console.log("this is k", k);
+  const handleKeyPress = async (e) => {
     const key = e.key.toUpperCase();
-    console.log(key);
 
     if (key === "BACKSPACE") {
       setCurrentGuess((prevGuess) => {
         return prevGuess.slice(0, -1);
       });
     } else if (key === "DELETE") {
-      setCurrentGuess((prevGuess) => {
-        return "";
-      });
+      setCurrentGuess("");
     } else if (/^[A-Z]$/.test(key)) {
       if (currentGuess.length < 5) {
         setCurrentGuess((prevGuess) => {
@@ -102,22 +108,34 @@ const useWordle = (solution, toastError, toastSuccess) => {
         });
       }
     } else if (key === "ENTER") {
-      // you can only enter if guess is turn is less than 5 and length of guess is 5
       if (turn > 5) {
-        console.log("you used up all guesses");
+        console.log("You used up all guesses");
         return;
       } else if (currentGuess.length !== 5) {
         console.log("Guess must be 5 characters long");
         toastError("Guess must be 5 characters long", 3000);
       } else {
-        const formattedGuess = formatGuess();
-        console.log(formattedGuess);
-        addNewGuess(formattedGuess);
+        const isValidWord = await checkWord(currentGuess);
+        if (isValidWord) {
+          const formattedGuess = formatGuess();
+          console.log(formattedGuess);
+          addNewGuess(formattedGuess);
+        } else {
+          console.log("Enter a valid English word");
+          toast.error("Please enter a valid English word", { autoClose: 1200 });
+        }
       }
     }
   };
 
-  return { turn, currentGuess, guesses, isCorrect, usedKeys, handleKeyPress };
+  return {
+    turn,
+    currentGuess,
+    guesses,
+    isCorrect,
+    usedKeys,
+    handleKeyPress,
+  };
 };
 
 export default useWordle;

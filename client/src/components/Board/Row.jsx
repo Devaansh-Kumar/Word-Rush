@@ -2,7 +2,7 @@ import React from "react";
 
 const Row = ({ guess, currentGuess }) => {
   const style =
-    "block h-16 w-16 m-1 border-2 border-neutral-600 py-4 text-2xl font-bold uppercase";
+    "flex justify-center block h-14 w-14 m-1 border-2 border-neutral-600 py-2.5 text-2xl font-bold uppercase";
 
   if (guess) {
     return (

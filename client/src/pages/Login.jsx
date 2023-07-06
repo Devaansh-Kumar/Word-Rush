@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import "./Form.css";
-import Spinner from "./Spinner";
+import Spinner from "../components/Spinner";
 
 // Creating schema
 const schema = Yup.object().shape({
