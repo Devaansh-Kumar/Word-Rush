@@ -13,8 +13,7 @@ const WordleGame = ({ solution }) => {
     toast.error(message, {autoClose: time});
   }
   const { turn, currentGuess, guesses, isCorrect, usedKeys, handleKeyPress } =
-    useWordle(solution, toastError);
-
+    useWordle(solution, toastError, toastSuccess);
 
 
   useEffect(() => {

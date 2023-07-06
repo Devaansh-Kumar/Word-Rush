@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const useWordle = (solution) => {
+const useWordle = (solution, toastError, toastSuccess) => {
   const [turn, setTurn] = useState(0); // what turn user is on
   const [currentGuess, setCurrentGuess] = useState(""); // what user is currently typing
   const [guesses, setGuesses] = useState([...Array(6)]); // place all guesses in this array
@@ -106,6 +108,7 @@ const useWordle = (solution) => {
         return;
       } else if (currentGuess.length !== 5) {
         console.log("Guess must be 5 characters long");
+        toastError("Guess must be 5 characters long", 3000);
       } else {
         const formattedGuess = formatGuess();
         console.log(formattedGuess);
