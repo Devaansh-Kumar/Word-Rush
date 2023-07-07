@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Spinner from './components/Spinner';
 import Wordle from "./components/Game/Wordle";
+import PrivateRoute from './utils/PrivateRoute';
 
 function App() {
   return (
@@ -10,8 +11,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Spinner />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/game" element={<Wordle />} />
         <Route path="/register" element={<Register />} />
+        {/*<Route path="/game" element={<PrivateRoute Component={Wordle} />} /> */}
+        <Route path="/game" element={<Wordle />} />
       </Routes>
     </>
   );
