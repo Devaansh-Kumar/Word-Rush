@@ -24,19 +24,15 @@ function Meaning({ solution }) {
 
     return (
         <div className="meaning-container">
-            <Popup
-                modal
-                nested
-                defaultOpen={true}
-            >
-                {close => (
-                    <div className="modal">
-                        <button className="close" onClick={close}>
-                            &times;
-                        </button>
-                        <div className="header">{ solution }</div>
-                        <div className="content">
-                            {definition ? (
+            {definition && (
+                <Popup
+                    modal
+                    nested
+                    defaultOpen={true}
+                >
+                    {close => (
+                        <div className="modal">
+                            <div className="content">
                                 <ul>
                                     {definition.map((def, index) => (
                                         <li key={index}>
@@ -51,24 +47,22 @@ function Meaning({ solution }) {
                                         </li>
                                     ))}
                                 </ul>
-                            ) : (
-                                <p>Loading...</p>
-                            )}
+                            </div>
+                            <div className="actions">
+                                <button
+                                    className="button"
+                                    onClick={() => {
+                                        console.log('modal closed');
+                                        close();
+                                    }}
+                                >
+                                    Close
+                                </button>
+                            </div>
                         </div>
-                        <div className="actions">
-                            <button
-                                className="button"
-                                onClick={() => {
-                                    console.log('modal closed');
-                                    close();
-                                }}
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                )}
-            </Popup>
+                    )}
+                </Popup>
+            )}
         </div>
     );
 }
