@@ -27,8 +27,8 @@ const Wordle = () => {
       <div className="flex justify-center text-sm mt-1 mb-2 font-serif">
         <h1>WORD-RUSH</h1>
       </div>
-
-      {<WordleGame solution={solution} />}
+      {solution && <div> the solution is: {solution}</div>}
+      {solution && <WordleGame solution={solution} />}
     </>
   );
 };

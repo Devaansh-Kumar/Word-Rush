@@ -122,7 +122,7 @@ const useWordle = (solution, toastError, toastSuccess) => {
           addNewGuess(formattedGuess);
         } else {
           console.log("Enter a valid English word");
-          toast.error("Please enter a valid English word", { autoClose: 1200 });
+          toastError("Please enter a valid English word",  1200);
         }
       }
     }

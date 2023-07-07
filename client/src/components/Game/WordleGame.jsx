@@ -26,6 +26,7 @@ const WordleGame = ({ solution }) => {
 
     if (turn > 5) {
       toastError("Game over! You ran out of attempts.", 5000);
+      toast.info(`The answer was ${solution}`, {autoClose: 7000});
       window.removeEventListener("keyup", handleKeyPress);
     }
 
