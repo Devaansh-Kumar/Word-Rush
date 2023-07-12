@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import WordleGame from "./WordleGame";
-import Logout from "../Button/Logout";
 
 const Wordle = () => {
   const [solution, setSolution] = useState(null);
@@ -27,9 +26,6 @@ const Wordle = () => {
     <>
       <div className="flex justify-center text-sm mt-1 mb-2 font-serif">
         <h1>WORD-RUSH</h1>
-      </div>
-      <div>
-        <Logout />
       </div>
       {solution && <div> the solution is: {solution}</div>}
       {solution && <WordleGame solution={solution} />}

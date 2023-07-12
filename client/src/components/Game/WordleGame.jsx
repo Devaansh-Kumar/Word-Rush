@@ -5,6 +5,7 @@ import Keyboard from "../Keyboard/Keyboard";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Meaning from "../Popup/Popup";
+import Logout from "../Button/Logout";
 
 const WordleGame = ({ solution }) => {
   const toastSuccess = (message, time) => {
@@ -47,6 +48,7 @@ const WordleGame = ({ solution }) => {
 
   return (
     <>
+      <Logout />
       <Grid currentGuess={currentGuess} turn={turn} guesses={guesses} />
       <Keyboard usedKeys={usedKeys} />
       <ToastContainer />

@@ -10,14 +10,15 @@ function Logout() {
   };
 
   return (
-    <div className="top-1">
+    <div className="fixed top-0 right-0 mt-7 mr-7">
       <button
         onClick={handleLogout}
-        className="bg-black-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+        className="bg-black-500 border-zinc-300 text-white font-bold py-2 px-4 rounded"
       >
         Logout
       </button>
     </div>
+
   );
 }
 
