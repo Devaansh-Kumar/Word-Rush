@@ -3,7 +3,6 @@ import { Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import "./Form.css";
-import Spinner from "../components/Spinner";
 
 // Creating schema
 const schema = Yup.object().shape({
@@ -17,7 +16,7 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
     setError("");
@@ -42,40 +41,18 @@ function Login() {
         return;
       }
 
-      const elapsedTime = Date.now() - startTime;
-      const delay = elapsedTime > 0 ? 1 : 0;
+      const token = response.headers.get('Authorization');
+      localStorage.setItem('token', token);
 
-      if (delay) 
-      {
-        setRedirecting(true);
-        setTimeout(() => {
-          navigate("/game");
-        }, delay);
-      } 
-      else 
-      {
+      setTimeout(() => {
         navigate("/game");
-      }
+      }, 1000);
     } catch (error) {
       console.error(error);
       setError("An error occurred during login.");
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (loading) {
-      // Display the spinner when loading is true
-      const spinnerTimeout = setTimeout(() => {
-        setLoading(false);
-        navigate("/");
-      }, 2000);
-
-      return () => {
-        clearTimeout(spinnerTimeout);
-      };
-    }
-  }, [loading, navigate]);
 
   return (
     <>

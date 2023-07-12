@@ -12,8 +12,8 @@ function App() {
         <Route path="/" element={<Spinner />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        {/*<Route path="/game" element={<PrivateRoute Component={Wordle} />} /> */}
-        <Route path="/game" element={<Wordle />} />
+        <Route path="/game" element={<PrivateRoute Component={Wordle} />} />
+        {/* <Route path="/game" element={<Wordle />} /> */}
       </Routes>
     </>
   );

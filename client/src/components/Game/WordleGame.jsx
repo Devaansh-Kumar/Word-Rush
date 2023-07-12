@@ -25,7 +25,7 @@ const WordleGame = ({ solution }) => {
       toastSuccess("Congratulations! You guessed the word correctly!", 3000);
       setTimeout(() => {
         setShowPopup(true);
-      }, 500); 
+      }, 500);
       window.removeEventListener("keyup", handleKeyPress);
     }
 

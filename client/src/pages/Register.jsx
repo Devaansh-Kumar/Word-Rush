@@ -15,7 +15,7 @@ const schema = Yup.object().shape({
 
 function Register() {
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Access the navigate function
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (values) => {
     setError("");
@@ -39,7 +39,9 @@ function Register() {
       // Handle successful registration
       console.log(data.message);
 
-      // Redirect to the login page
+      const token = localStorage.getItem('token');
+      localStorage.setItem('token', token);
+
       navigate("/game");
     } catch (error) {
       console.error(error);
