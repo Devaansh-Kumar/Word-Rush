@@ -16,21 +16,25 @@ const WordleGame = ({ solution }) => {
   const { turn, currentGuess, guesses, isCorrect, usedKeys, handleKeyPress } =
     useWordle(solution, toastError, toastSuccess);
 
-  const [showPopup, setShowPopup] = useState(false); // State to control the visibility of the popup
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     window.addEventListener("keyup", handleKeyPress);
 
-    if (isCorrect) {
+    if (isCorrect && !showPopup) {
       toastSuccess("Congratulations! You guessed the word correctly!", 3000);
-      setShowPopup(true); // Show the popup when guess is correct
+      setTimeout(() => {
+        setShowPopup(true);
+      }, 500); 
       window.removeEventListener("keyup", handleKeyPress);
     }
 
-    if (turn > 5) {
+    if (turn > 5 && !showPopup) {
       toastError("Game over! You ran out of attempts.", 5000);
       toast.info(`The answer was ${solution}`, { autoClose: 7000 });
-      setShowPopup(true); 
+      setTimeout(() => {
+        setShowPopup(true);
+      }, 500);
       window.removeEventListener("keyup", handleKeyPress);
     }
 

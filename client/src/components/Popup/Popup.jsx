@@ -32,6 +32,7 @@ function Meaning({ solution }) {
                 >
                     {close => (
                         <div className="modal">
+                            <div className="header"> { solution } </div>
                             <div className="content">
                                 <ul>
                                     {definition.map((def, index) => (
