@@ -3,17 +3,19 @@ Word-Rush is a multiplayer real-time Wordle game where users can register themse
 > **Note** <br /> The project is still under development and all the components are not ready to use.
 ## Instructions for Setting up the repository
 * Clone the repository using the command
-
-```git clone https://github.com/Devaansh-Kumar/Word-Rush.git```
-* Or alternatively create a fork of the repository with the commmand
-
-`git clone https://github.com/<your-username>/Word-Rush.git`.
+```
+git clone https://github.com/Devaansh-Kumar/Word-Rush.git
+```
+* Or alternatively create a fork of the repository with the command
+```
+git clone https://github.com/<your-username>/Word-Rush.git
+```
 ### Frontend
-1. Navigate to `/client` directory and run `npm i` to install the necessary packages.
+1. Navigate to `client` directory and run `npm i` to install the necessary packages.
 2. Run it using `npm run dev`.
 3. Frontend runs on `http://localhost:5173`.
 ### Backend
-* Navigate to `/server` directory
+* Navigate to `server` directory.
 #### Env
 1. Touch a file `.env`.
 2. Duplicate the `.env.example` file and rename it to `.env`.
@@ -24,4 +26,5 @@ Word-Rush is a multiplayer real-time Wordle game where users can register themse
 3. It runs on `http://localhost:3000`.
 ## Tech Stack
 1. MERN Stack (MongoDB, Express.js, React.js, Node.js)
-2. Socket.io
+2. Tailwind CSS
+3. Socket.io
