@@ -1,6 +1,5 @@
 # Word-Rush
-Word-Rush is a multiplayer real-time Wordle game where users can register themselves on the platform and join in to play simultaneously with other participants. Players can generate invite links to share with others and compete to guess the generated word. The game ensures that all participants in a group are presented with the exact same word to guess.
-> **Note** <br /> The project is still under development and all the components are not ready to use.
+Word-Rush is a multiplayer real-time Wordle game where users can register themselves on the platform and join in to play simultaneously with other participants. Players can generate invite links to share with others and compete to guess the generated word. The game ensures that all participants in a group are presented with the exact same word to guess. 
 ## Instructions for Setting up the repository
 * Clone the repository using the command
 ```
