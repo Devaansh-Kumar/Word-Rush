@@ -1,34 +1,30 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import WordleGame from "./WordleGame";
+import Spinner from "../Shared/Spinner";
+import io from "socket.io-client";
 
 const Wordle = () => {
   const [solution, setSolution] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const socket = io.connect("http://localhost:3000");
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://random-word-api.vercel.app/api?length=5"
-        );
-        const wordString = response.data.join("");
-        setSolution(wordString.toUpperCase());
-        console.log(solution);
-      } catch (error) {
-        console.log(error);
-        console.error("Maximum retry limit reached. Unable to fetch data.");
-      }
-    };
-    fetchData();
-  }, [setSolution]);
+    socket.on('word', (word) => {
+      setSolution(word);
+      setLoading(false);
+    });
+  }, []);
 
   return (
     <>
-      <div className="flex justify-center text-sm mt-1 mb-2 font-serif">
-        <h1>WORD-RUSH</h1>
-      </div>
-      {solution && <div> the solution is: {solution}</div>}
-      {solution && <WordleGame solution={solution} />}
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          {solution && <div> the solution is: {solution}</div>}
+          {solution && <WordleGame solution={solution} />}
+        </>
+      )}
     </>
   );
 };

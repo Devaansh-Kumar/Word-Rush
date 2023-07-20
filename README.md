@@ -24,7 +24,16 @@ git clone https://github.com/<your-username>/Word-Rush.git
 1. Run `npm i` to install the neccessary packages.
 2. Run it using `npm run devStart`.
 3. It runs on `http://localhost:3000`.
+
 ## Tech Stack
 1. MERN Stack (MongoDB, Express.js, React.js, Node.js)
 2. Tailwind CSS
 3. Socket.io
+
+## References
+1. https://react.dev/learn
+2. https://v2.tailwindcss.com/docs
+3. https://socket.io/docs/v4/
+4. https://blog.bitsrc.io/apis-vs-websockets-vs-webhooks-what-to-choose-5942b73aeb9b
+5. https://dev.to/nitdgplug/learn-the-basics-of-socket-io-by-making-a-multiplayer-game-394g
+6. https://medium.com/@RossWhitehouse/setting-up-eslint-in-react-c20015ef35f7

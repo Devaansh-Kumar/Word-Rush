@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
@@ -19,7 +18,7 @@ const checkWord = async (word) => {
   }
 };
 
-const useWordle = (solution, toastError, toastSuccess) => {
+const useWordle = (solution, toastError) => {
   const [turn, setTurn] = useState(0);
   const [currentGuess, setCurrentGuess] = useState("");
   const [guesses, setGuesses] = useState([...Array(6)]);

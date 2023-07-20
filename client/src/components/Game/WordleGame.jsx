@@ -48,6 +48,9 @@ const WordleGame = ({ solution }) => {
 
   return (
     <>
+      <div className="flex justify-center text-sm mt-1 mb-2 font-serif">
+        <h1>WORD-RUSH</h1>
+      </div>
       <Logout />
       <Grid currentGuess={currentGuess} turn={turn} guesses={guesses} />
       <Keyboard usedKeys={usedKeys} />

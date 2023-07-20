@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import Spinner from "../components/Shared/Spinner";
 import "./Form.css";
 
-// Creating schema
 const schema = Yup.object().shape({
   username: Yup.string().required("Username is a required field"),
   password: Yup.string()
@@ -15,14 +15,11 @@ const schema = Yup.object().shape({
 function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [redirecting, setRedirecting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
     setError("");
     setLoading(true);
-
-    const startTime = Date.now();
 
     try {
       const response = await fetch("http://localhost:3000/login", {
@@ -41,12 +38,10 @@ function Login() {
         return;
       }
 
-      const token = response.headers.get('Authorization');
-      localStorage.setItem('token', token);
-
-      setTimeout(() => {
-        navigate("/game");
-      }, 1000);
+      const token = response.headers.get("Authorization");
+      localStorage.setItem("token", token);
+      setLoading(false); 
+      navigate("/game");
     } catch (error) {
       console.error(error);
       setError("An error occurred during login.");
@@ -54,70 +49,76 @@ function Login() {
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setLoading(true); 
+      setTimeout(() => {
+        setLoading(false); // No need to display the Spinner for small delay
+        navigate("/game");
+      }, 1000);
+    }
+  }, [navigate]);
+
   return (
     <>
-      {/* Wrapping form inside formik tag and passing our schema to validationSchema prop */}
-      <Formik
-        validationSchema={schema}
-        initialValues={{ username: "", password: "" }}
-        onSubmit={handleSubmit}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-        }) => (
-          <div className="login">
-            <div className="form">
-              {/* Passing handleSubmit parameter to html form onSubmit property */}
-              <form noValidate onSubmit={handleSubmit}>
-                <span>Login</span>
-                {/* Our input html with passing formik parameters like handleChange, values, handleBlur to input properties */}
-                <input
-                  type="text"
-                  name="username"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.username}
-                  placeholder="Enter username"
-                  className="form-control inp_text"
-                  id="username"
-                />
-                {/* If validation is not passed show errors */}
-                <p className="error">
-                  {errors.username && touched.username && errors.username}
-                </p>
-                {/* Our input html with passing formik parameters like handleChange, values, handleBlur to input properties */}
-                <input
-                  type="password"
-                  name="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                  placeholder="Enter password"
-                  className="form-control"
-                />
-                {/* If validation is not passed show errors */}
-                <p className="error">
-                  {errors.password && touched.password && errors.password}
-                </p>
-                {/* Display error message if login fails */}
-                {error && <p className="error">{error}</p>}
-                {/* Render the spinner component if loading is true */}
-                {redirecting && <Spinner />}
-                {/* Click on submit button to submit the form */}
-                <button type="submit">Login</button>
-                <Link to="/register" className="link">
-                  New User? Create an account.
-                </Link>
-              </form>
+      {loading ? ( 
+        <Spinner />
+      ) : (
+        <Formik
+          validationSchema={schema}
+          initialValues={{ username: "", password: "" }}
+          onSubmit={handleSubmit}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+          }) => (
+            <div className="login">
+              <div className="form">
+                <form noValidate onSubmit={handleSubmit}>
+                  <span>Login</span>
+                  <input
+                    type="text"
+                    name="username"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.username}
+                    placeholder="Enter username"
+                    className="form-control inp_text"
+                    id="username"
+                  />
+                  <p className="error">
+                    {errors.username && touched.username && errors.username}
+                  </p>
+                  <input
+                    type="password"
+                    name="password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.password}
+                    placeholder="Enter password"
+                    className="form-control"
+                  />
+                  <p className="error">
+                    {errors.password && touched.password && errors.password}
+                  </p>
+                  {error && <p className="error">{error}</p>}
+                  <button type="submit">Login</button>
+                  <Link to="/register" className="link">
+                    New User? Create an account.
+                  </Link>
+                </form>
+              </div>
             </div>
-          </div>
-        )}
-      </Formik>
+          )}
+        </Formik>
+      )}
+      {localStorage.getItem("token") && navigate("/game")}
     </>
   );
 }

@@ -4,7 +4,8 @@ import axios from 'axios';
 
 const InviteLink = () => {
     const [inviteLink, setInviteLink] = useState('');
-
+    const URL = `http://localhost:5173/game?invite=${inviteLink}`
+    
     const handleClick = async () => {
         try {
             const res = await axios.get("http://localhost:3000/invite");
@@ -17,7 +18,7 @@ const InviteLink = () => {
 
     const handleCopyClick = async () => {
         try {
-            await navigator.clipboard.writeText(inviteLink);
+            await navigator.clipboard.writeText(URL);
             alert('Invite link copied to clipboard!');
         } catch (error) {
             console.error('Error copying to clipboard:', error);
@@ -32,11 +33,11 @@ const InviteLink = () => {
                 {inviteLink && (
                     <>
                         <p>Invite Link:</p>
-                        <a href={inviteLink} target="_blank" rel="noopener noreferrer">
-                            {inviteLink}
+                        <a href={URL} target="_blank" rel="noopener noreferrer">
+                            {URL}
                         </a>
                         <button onClick={handleCopyClick}>Copy</button>
-                        <ShareButton url={inviteLink} title="Invite Link" text="Join us with this invite link:" />
+                        <ShareButton url={URL} title="Invite Link" text="Join us with this invite link:" />
                     </>
                 )}
             </div>
