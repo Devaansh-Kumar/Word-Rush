@@ -21,6 +21,7 @@ function Spinner() {
         aria-label="Loading Spinner"
         data-testid="loader"
       />
+      <h2 style={{ fontSize: "24px", marginTop: "20px", textAlign: "center", fontWeight: "bold" }}>Hang tight...</h2>
     </div>
   );
 }

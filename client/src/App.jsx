@@ -5,15 +5,17 @@ import Register from './pages/Register'
 import Wordle from './components/Game/Wordle'
 import PrivateRoute from './utils/PrivateRoute'
 import InviteLink from './components/Button/InviteLink'
+import Home from './pages/Home'
 
-function App () {
+function App() {
   return (
     <>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/invite" element={<InviteLink />} />
-        <Route path="/game" element={<Wordle />}/>
+        <Route path="/game" element={<Wordle />} />
       </Routes>
     </>
   )
