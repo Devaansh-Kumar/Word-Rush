@@ -2,7 +2,8 @@ const express = require('express');
 const http = require('http');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const axios = require('axios'); 
+const axios = require('axios');
+var RateLimit = require('express-rate-limit'); 
 const app = express();
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
@@ -28,8 +29,22 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
 
 // use the routes
 app.use(cors());
-app.post('/register', authController.registerUser);
-app.post('/login', authController.loginUser);
+
+// middlewares to prevent DOS
+const registerLimiter = RateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 5,
+  message: { error: "Too many registration attempts. Please try again later." },
+});
+
+const loginLimiter = RateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 10, 
+  message: { error: "Too many login attempts. Please try again later." },
+});
+
+app.post('/register', registerLimiter, authController.registerUser);
+app.post('/login', loginLimiter, authController.loginUser);
 app.use(inviteRouter);
 
 const configureSocket = require('./socket'); 
