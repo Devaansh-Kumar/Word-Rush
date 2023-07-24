@@ -15,7 +15,7 @@ router.use(cors());
 async function registerUser(req, res) {
   const { name, username, password } = req.body;
   try {
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ username: { $eq: username } });
     if (existingUser) {
       res.status(409).json({ error: 'Username already exists' });
     } else {
@@ -36,7 +36,7 @@ async function loginUser(req, res) {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username: { $eq: username } });
     if (user) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (isPasswordValid) {
@@ -55,7 +55,7 @@ async function loginUser(req, res) {
 }
 
 function generateToken(username) {
-  return jwt.sign({ username }, process.env.JWT_SECRET_KEY, { expiresIn: '30s' });
+  return jwt.sign({ username }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 }
 
 module.exports = {
