@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
@@ -8,13 +8,13 @@ const checkWord = async (word) => {
       `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
     );
     if (response.status === 200) {
-      return true; 
+      return true;
     } else {
-      return false; 
+      return false;
     }
   } catch (error) {
     console.error("Error fetching the data");
-    return false; 
+    return false;
   }
 };
 
@@ -24,6 +24,7 @@ const useWordle = (solution, toastError) => {
   const [guesses, setGuesses] = useState([...Array(6)]);
   const [isCorrect, setIsCorrect] = useState(false);
   const [usedKeys, setUsedKeys] = useState({});
+  const [score, setScore] = useState(0); // Added score state
 
   const formatGuess = () => {
     let solutionArray = [...solution];
@@ -89,7 +90,28 @@ const useWordle = (solution, toastError) => {
     });
 
     setCurrentGuess("");
+    calculateScore(formattedGuess); // Call calculateScore to update the score
   };
+
+  const calculateScore = (formattedGuess) => {
+    let yellowCount = 0;
+    let greenCount = 0;
+
+    formattedGuess.forEach((letter) => {
+      if (letter.color === "yellow") {
+        yellowCount++;
+      } else if (letter.color === "green") {
+        greenCount++;
+      }
+    });
+
+    // Update score based on yellow and green counts
+    setScore((prevScore) => prevScore + yellowCount * 5 + greenCount * 10);
+  };
+  
+  useEffect(() => {
+    console.log("Score:", score);
+  }, [score]);
 
   const handleKeyPress = async (e) => {
     const key = e.key.toUpperCase();
@@ -121,7 +143,7 @@ const useWordle = (solution, toastError) => {
           addNewGuess(formattedGuess);
         } else {
           console.log("Enter a valid English word");
-          toastError("Please enter a valid English word",  1200);
+          toastError("Please enter a valid English word", 1200);
         }
       }
     }
@@ -134,6 +156,7 @@ const useWordle = (solution, toastError) => {
     isCorrect,
     usedKeys,
     handleKeyPress,
+    score,
   };
 };
 

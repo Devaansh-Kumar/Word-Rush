@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import PacmanLoader from "react-spinners/PacmanLoader";
 
@@ -8,8 +9,8 @@ const override = {
 };
 
 function Spinner() {
-  let [loading, setLoading] = useState(true);
-  let [color, setColor] = useState("#ffffff");
+  let [loading] = useState(true);
+  let [color] = useState("#ffffff");
 
   return (
     <div className="sweet-loading">

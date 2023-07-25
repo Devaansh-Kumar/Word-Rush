@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Row from "./Row";
 
 const Grid = ({ currentGuess, turn, guesses }) => {
@@ -14,6 +15,12 @@ const Grid = ({ currentGuess, turn, guesses }) => {
         })}
     </div>
   );
+};
+
+Grid.propTypes = {
+  currentGuess: PropTypes.string,
+  turn: PropTypes.number,
+  guesses: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default Grid;
