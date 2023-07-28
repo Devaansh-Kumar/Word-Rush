@@ -14,7 +14,7 @@ const WordleGame = ({ solution }) => {
   const toastError = (message, time) => {
     toast.error(message, { autoClose: time });
   };
-  const { turn, currentGuess, guesses, isCorrect, usedKeys, handleKeyPress } =
+  const { turn, currentGuess, guesses, isCorrect, usedKeys, score, handleKeyPress } =
     useWordle(solution, toastError, toastSuccess);
 
   const [showPopup, setShowPopup] = useState(false);
@@ -30,7 +30,7 @@ const WordleGame = ({ solution }) => {
       window.removeEventListener("keyup", handleKeyPress);
     }
 
-    if (turn > 5 && !showPopup) {
+    if (turn > 5 && !isCorrect && !showPopup) {
       toastError("Game over! You ran out of attempts.", 5000);
       toast.info(`The answer was ${solution}`, { autoClose: 7000 });
       setTimeout(() => {
@@ -50,6 +50,7 @@ const WordleGame = ({ solution }) => {
     <>
       <div className="flex justify-center text-sm mt-1 mb-2 font-serif">
         <h1>WORD-RUSH</h1>
+        Score: {score}
       </div>
       <Logout />
       <Grid currentGuess={currentGuess} turn={turn} guesses={guesses} />

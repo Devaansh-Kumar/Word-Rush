@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import io from "socket.io-client";
 
 const checkWord = async (word) => {
   try {
@@ -21,10 +22,11 @@ const checkWord = async (word) => {
 const useWordle = (solution, toastError) => {
   const [turn, setTurn] = useState(0);
   const [currentGuess, setCurrentGuess] = useState("");
-  const [guesses, setGuesses] = useState([...Array(6)]);
+  const [guesses, setGuesses] = useState(Array(6).fill(""));
   const [isCorrect, setIsCorrect] = useState(false);
   const [usedKeys, setUsedKeys] = useState({});
-  const [score, setScore] = useState(0); // Added score state
+  const [score, setScore] = useState(0);
+  const [yellowLetters, setYellowLetters] = useState([]);
 
   const formatGuess = () => {
     let solutionArray = [...solution];
@@ -90,28 +92,36 @@ const useWordle = (solution, toastError) => {
     });
 
     setCurrentGuess("");
-    calculateScore(formattedGuess); // Call calculateScore to update the score
+    calculateScore(formattedGuess);
   };
 
   const calculateScore = (formattedGuess) => {
-    let yellowCount = 0;
-    let greenCount = 0;
-
     formattedGuess.forEach((letter) => {
-      if (letter.color === "yellow") {
-        yellowCount++;
-      } else if (letter.color === "green") {
-        greenCount++;
+      const key = letter.key;
+
+      if (!usedKeys[key]) {
+        if (letter.color === "green") {
+          if (yellowLetters.includes(key)) {
+            setScore((prevScore) => prevScore + 5);
+            setYellowLetters((prevYellowLetters) => prevYellowLetters.filter((l) => l.key !== key));
+          } else {
+            setScore((prevScore) => prevScore + 10);
+          }
+        } else if (letter.color === "yellow" && !yellowLetters.includes(key)) {
+          setYellowLetters((prevYellowLetters) => [...prevYellowLetters, key]);
+          setScore((prevScore) => prevScore + 5);
+        }
+        setUsedKeys((prevUsedKeys) => ({ ...prevUsedKeys, [key]: "true" }));
       }
     });
-
-    // Update score based on yellow and green counts
-    setScore((prevScore) => prevScore + yellowCount * 5 + greenCount * 10);
   };
-  
+
   useEffect(() => {
     console.log("Score:", score);
+    const socket = io.connect("http://localhost:3000");
+    socket.emit("submitScore", score);
   }, [score]);
+
 
   const handleKeyPress = async (e) => {
     const key = e.key.toUpperCase();
@@ -156,6 +166,7 @@ const useWordle = (solution, toastError) => {
     isCorrect,
     usedKeys,
     handleKeyPress,
+    yellowLetters,
     score,
   };
 };

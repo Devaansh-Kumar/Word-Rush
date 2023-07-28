@@ -3,16 +3,17 @@ import PropTypes from "prop-types";
 import Row from "./Row";
 
 const Grid = ({ currentGuess, turn, guesses }) => {
+  console.log("guesses:", guesses);
 
   return (
     <div>
-        {guesses.map((guess, index) => {
-            if(turn === index) {
-                return <Row key={index} currentGuess={currentGuess} />
-            }
+      {guesses.map((guess, index) => {
+        if (turn === index) {
+          return <Row key={index} currentGuess={currentGuess} />;
+        }
 
-            return <Row key={index} guess={guess} />
-        })}
+        return <Row key={index} guess={guess} />;
+      })}
     </div>
   );
 };
