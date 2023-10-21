@@ -1,0 +1,24 @@
+version: '3'
+services:
+  client:
+    build: ./client
+    ports:
+      - "8080:8080"
+    container_name: word-rush-client
+    restart: always
+    links:
+      - server
+    networks:
+      - word-rush-network
+
+  server:
+    build: ./server
+    ports:
+      - "3000:3000"
+    container_name: word-rush-server
+    restart: always
+    networks:
+      - word-rush-network
+
+networks:
+  word-rush-network:
