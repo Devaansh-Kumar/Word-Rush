@@ -13,28 +13,27 @@ git clone https://github.com/Devaansh-Kumar/Word-Rush.git
 ```
 git clone https://github.com/<your-username>/Word-Rush.git
 ```
-### Frontend
-1. Navigate to `client` directory and run `npm i` to install the necessary packages.
-2. Run it using `npm run dev`.
-3. Frontend runs on `http://localhost:5173`.
+* Navigate to the project directory
 
-### Backend
-* Navigate to `server` directory.
-
-#### Env
+### Set Up Env
 1. Touch a file `.env`.
 2. Duplicate the `.env.example` file and rename it to `.env`.
-3. Fill in the necessary environment variables in the `.env` file and start the database.
+3. Fill in the necessary environment variables in the `.env` file.
 
-#### Run the Backend
-1. Run `npm i` to install the neccessary packages.
-2. Run it using `npm run devStart`.
-3. It runs on `http://localhost:3000`.
+### Using Docker to run the project
+1. Install Docker and Docker Compose from the given links.
+    * [Docker](https://docs.docker.com/engine/install/)
+    * [Docker Compose](https://docs.docker.com/compose/install/)
+2. Run the following command to run the project.
+```
+docker-compose up
+```
 
 ## Tech Stack
 1. MERN Stack (MongoDB, Express.js, React.js, Node.js)
 2. Tailwind CSS
 3. Socket.io
+4. Docker
 
 ## References
 * [React Documenetation](https://react.dev/learn)
