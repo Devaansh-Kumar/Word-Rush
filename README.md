@@ -16,18 +16,38 @@ git clone https://github.com/<your-username>/Word-Rush.git
 * Navigate to the project directory
 
 ### Set Up Env
-1. Touch a file `.env`.
-2. Duplicate the `.env.example` file and rename it to `.env`.
-3. Fill in the necessary environment variables in the `.env` file.
+1. Navigate to the server directory.
+2. Touch a file `.env`.
+3. Duplicate the `.env.example` file and rename it to `.env`.
+4. Fill in the necessary environment variables in the `.env` file.
+
+### Using npm to run the project
+
+#### Client
+1. Navigate to the client directory.
+2. Run the ``npm install`` to install the dependencies.
+3. Run ``npm run dev`` to start the client.
+4. The client will be running on ``localhost:8080``.
+
+#### Server
+1. Navigate to the server directory.
+2. Run the ``npm install`` to install the dependencies.
+3. Run ``npm run devStart`` to start the server.
+4. The server will be running on ``localhost:3000``.
 
 ### Using Docker to run the project
 1. Install Docker and Docker Compose from the given links.
     * [Docker](https://docs.docker.com/engine/install/)
     * [Docker Compose](https://docs.docker.com/compose/install/)
-2. Run the following command to run the project.
+2. Run the following command to build the project.
+```
+docker-compose build
+```
+3. Run the following command to run the project.
 ```
 docker-compose up
 ```
+4. Press ``Ctrl+C`` to bring down the containers.
 
 ## Tech Stack
 1. MERN Stack (MongoDB, Express.js, React.js, Node.js)
