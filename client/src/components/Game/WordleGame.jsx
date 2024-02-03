@@ -4,6 +4,7 @@ import Grid from "../Board/Grid";
 import Keyboard from "../Keyboard/Keyboard";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Confetti from "react-confetti"
 import Meaning from "../Popup/Popup";
 import Logout from "../Button/Logout";
 
@@ -18,6 +19,7 @@ const WordleGame = ({ solution }) => {
     useWordle(solution, toastError, toastSuccess);
 
   const [showPopup, setShowPopup] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     window.addEventListener("keyup", handleKeyPress);
@@ -26,6 +28,11 @@ const WordleGame = ({ solution }) => {
       toastSuccess("Congratulations! You guessed the word correctly!", 3000);
       setTimeout(() => {
         setShowPopup(true);
+        setShowConfetti(true);
+
+        setTimeout(() => {
+          setShowConfetti(false);
+        }, 8000); 
       }, 500);
       window.removeEventListener("keyup", handleKeyPress);
     }
@@ -48,15 +55,16 @@ const WordleGame = ({ solution }) => {
 
   return (
     <>
-      <div className="flex justify-center text-sm mt-1 mb-2 font-serif">
+      <div className="flex justify-center text-4xl mb-2 font-serif text-white">
         <h1>WORD-RUSH</h1>
-        Score: {score}
+        {/*Score: {score} */}
       </div>
       <Logout />
       <Grid currentGuess={currentGuess} turn={turn} guesses={guesses} />
       <Keyboard usedKeys={usedKeys} />
       <ToastContainer />
-      {showPopup && <Meaning solution={solution} />}
+      {showConfetti && <Confetti />}
+      {showPopup && <Meaning solution={solution} />} 
     </>
   );
 };

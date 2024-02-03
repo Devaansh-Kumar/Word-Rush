@@ -54,7 +54,7 @@ function Login() {
     if (token) {
       setLoading(true); 
       setTimeout(() => {
-        setLoading(false); // No need to display the Spinner for small delay
+        setLoading(false); 
         navigate("/game");
       }, 1000);
     }
@@ -78,7 +78,8 @@ function Login() {
             handleBlur,
             handleSubmit,
           }) => (
-            <div className="login">
+            <div className=" w-[360px] pt-[8%] pb-0 px-0
+            font-mono">
               <div className="form">
                 <form noValidate onSubmit={handleSubmit}>
                   <span>Login</span>

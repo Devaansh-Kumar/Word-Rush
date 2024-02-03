@@ -21,8 +21,8 @@ const Wordle = () => {
         <Spinner />
       ) : (
         <>
-          {solution && <div> the solution is: {solution}</div>}
-          {solution && <WordleGame solution={solution} />}
+          {solution && <div className="text-white"> the solution is: {solution}</div>} 
+          {solution && <WordleGame solution={solution} />} 
         </>
       )}
     </>

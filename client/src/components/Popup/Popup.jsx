@@ -24,7 +24,7 @@ function Meaning({ solution }) {
     }, [solution]);
 
     return (
-        <div className="flex justify-center items-center fixed w-screen h-screen z-[1050] left-0 top-0;">
+        <div className="flex justify-center items-center fixed w-screen h-screen z-[1050] left-0 top-0">
             {definition && (
                 <Popup modal nested defaultOpen={isModalOpen}>
                     {close => (
@@ -50,7 +50,7 @@ function Meaning({ solution }) {
                             </div>
                             <div className="w-full text-center m-auto px-[5px] py-2.5;">
                                 <button
-                                    className="text-xs bg-[#232323] relative rounded-[10px];"
+                                    className="text-xs bg-[#232323] relative rounded-[10px] text-white mb-4"
                                     onClick={() => {
                                         console.log('modal closed');
                                         close();

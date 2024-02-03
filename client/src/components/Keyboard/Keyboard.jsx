@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import letters from "./KeyboardLetters.json";
 
 const Keyboard = ({ usedKeys }) => {
@@ -8,11 +7,11 @@ const Keyboard = ({ usedKeys }) => {
   const secondRow = letters.letters[1].secondRow;
   const thirdRow = letters.letters[2].thirdRow;
   const style =
-    "h-12 w-12 m-0.5 border-2 py-2 border-neutral-700 rounded-md text-xl text-center font-semibold bg-zinc-800 hover:border-zinc-500";
+    "h-11 w-11 m-0.5 border-2 py-2 border-neutral-700 rounded-md text-xl text-center font-semibold bg-zinc-800 hover:border-zinc-500 text-white";
   const SpecialKeyStyle =
-    "h-12 w-20 m-0.5 border-2 py-2 border-neutral-700 rounded-md text-xl text-center font-semibold bg-zinc-800 hover:border-zinc-500";
+    "h-11 w-20 m-0.5 border-2 py-2 border-neutral-700 rounded-md text-xl text-center font-semibold bg-zinc-800 hover:border-zinc-500 text-white";
   const BackSpaceStyle =
-    "h-12 w-32 m-0.5 border-2 py-2 border-neutral-700 rounded-md text-xl text-center font-semibold bg-zinc-800 hover:border-zinc-500";
+    "h-11 w-32 m-0.5 border-2 py-2 border-neutral-700 rounded-md text-xl text-center font-semibold bg-zinc-800 hover:border-zinc-500 text-white";
 
   return (
     <div className="flex flex-col mt-3 items-center">
@@ -73,10 +72,6 @@ const Keyboard = ({ usedKeys }) => {
       </div>
     </div>
   );
-};
-
-Keyboard.propTypes = {
-  usedKeys: PropTypes.object.isRequired,
 };
 
 export default Keyboard;

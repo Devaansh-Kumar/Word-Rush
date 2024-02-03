@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import io from "socket.io-client";
@@ -19,14 +20,18 @@ const checkWord = async (word) => {
   }
 };
 
-const useWordle = (solution, toastError) => {
+const useWordle = (solution, toastError, toastSuccess) => {
   const [turn, setTurn] = useState(0);
   const [currentGuess, setCurrentGuess] = useState("");
-  const [guesses, setGuesses] = useState(Array(6).fill(""));
+  const [guesses, setGuesses] = useState([...Array(6)]);
   const [isCorrect, setIsCorrect] = useState(false);
   const [usedKeys, setUsedKeys] = useState({});
-  const [score, setScore] = useState(0);
-  const [yellowLetters, setYellowLetters] = useState([]);
+
+  let grayArray = [];
+  let yellowArray = [];
+  let greenArray = [];
+
+  const [scoreChange, setScore] = useState(0);
 
   const formatGuess = () => {
     let solutionArray = [...solution];
@@ -52,77 +57,65 @@ const useWordle = (solution, toastError) => {
   };
 
   const addNewGuess = async (formattedGuess) => {
+    let scoreChange = 0
     if (currentGuess === solution) {
       setIsCorrect(true);
     }
-
+  
     setGuesses((prevGuesses) => {
       let newGuesses = [...prevGuesses];
       newGuesses[turn] = formattedGuess;
       return newGuesses;
     });
-
+  
     setTurn((prevTurn) => {
       return prevTurn + 1;
     });
-
+  
     setUsedKeys((prevUsedKeys) => {
       let newKeys = { ...prevUsedKeys };
       formattedGuess.forEach((letter) => {
         const currentColor = newKeys[letter.key];
-
+  
         if (letter.color === "green") {
+          if (currentColor === "yellow") {
+            yellowArray = yellowArray.filter((key) => key !== letter.key);
+            scoreChange += 5
+          } else if (currentColor === "gray") {
+            grayArray = grayArray.filter((key) => key !== letter.key);
+            scoreChange += 10
+          }
           newKeys[letter.key] = "green";
-          return;
-        }
-        if (letter.color === "yellow" && currentColor !== "green") {
+          greenArray.push(letter.key);
+        } else if (letter.color === "yellow" && currentColor !== "green") {
+          if (currentColor === "gray") {
+            grayArray = grayArray.filter((key) => key !== letter.key);
+            scoreChange += 5
+          }
           newKeys[letter.key] = "yellow";
-          return;
-        }
-        if (
+          yellowArray.push(letter.key);
+        } else if (
           letter.color === "gray" &&
           currentColor !== "yellow" &&
           currentColor !== "green"
         ) {
           newKeys[letter.key] = "gray";
-          return;
+          grayArray.push(letter.key);
         }
       });
       return newKeys;
     });
-
+    setScore((prevScore) => prevScore + scoreChange);
+    console.log("Score:", scoreChange)
     setCurrentGuess("");
-    calculateScore(formattedGuess);
   };
-
-  const calculateScore = (formattedGuess) => {
-    formattedGuess.forEach((letter) => {
-      const key = letter.key;
-
-      if (!usedKeys[key]) {
-        if (letter.color === "green") {
-          if (yellowLetters.includes(key)) {
-            setScore((prevScore) => prevScore + 5);
-            setYellowLetters((prevYellowLetters) => prevYellowLetters.filter((l) => l.key !== key));
-          } else {
-            setScore((prevScore) => prevScore + 10);
-          }
-        } else if (letter.color === "yellow" && !yellowLetters.includes(key)) {
-          setYellowLetters((prevYellowLetters) => [...prevYellowLetters, key]);
-          setScore((prevScore) => prevScore + 5);
-        }
-        setUsedKeys((prevUsedKeys) => ({ ...prevUsedKeys, [key]: "true" }));
-      }
-    });
-  };
-
+  
   useEffect(() => {
-    console.log("Score:", score);
+    console.log("Score:", scoreChange);
     const socket = io.connect("http://localhost:3000");
-    socket.emit("submitScore", score);
-  }, [score]);
-
-
+    socket.emit("submitScore", scoreChange);
+  }, [scoreChange]);
+  
   const handleKeyPress = async (e) => {
     const key = e.key.toUpperCase();
 
@@ -166,8 +159,6 @@ const useWordle = (solution, toastError) => {
     isCorrect,
     usedKeys,
     handleKeyPress,
-    yellowLetters,
-    score,
   };
 };
 
